@@ -6,11 +6,15 @@
     <!-- Inclure des liens vers des fichiers CSS, des scripts JavaScript ou d'autres dépendances nécessaires -->
 </head>
 <body>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <a href="/videotheque">Accueil</a>  <a href="/connexion">Se connecter</a>  <a href="/collection">Collection</a>       
+    </div>
     <h1>{{ movie.title }}</h1>
     <img src="http://image.tmdb.org/t/p/w185/{{ movie.poster_path }}" alt="{{ movie.title }}">
     <p>Date de sortie : {{ movie.release_date }}</p>
     <p>Popularité : {{ movie.popularity }}</p>
     <p>Synopsis : {{ movie.overview }}</p>
+    <a href="#" id="addToCollection">Ajouter à ma collection</a>
     <!-- Inclure d'autres détails du film selon les besoins -->
 </body>
 </html>

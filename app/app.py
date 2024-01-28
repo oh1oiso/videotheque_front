@@ -14,6 +14,19 @@ def fetch_movies(url):
     response = requests.get(url, headers=headers)
     return response.json()['results'] if response.status_code == 200 else []
 
+# Fonction pour récupérer les détails d'un film à partir de l'API TMDB
+def fetch_movie_details(movie_id):
+    url = f'https://api.themoviedb.org/3/movie/{movie_id}?language=en-US'
+    headers = {
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2MTdhNGZlNWQ1MzI2ZDk0ZTI3ZDI3YTRiODQzMmFlZSIsInN1YiI6IjY1YjUyZmYwNmUwZDcyMDE0OTQ3MDg3MyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.QCiPm9TC11xtADfyp2jr85Z_aBvWLaEzaJjWeqC7ZM4',
+        'Accept': 'application/json'
+    }
+    response = requests.get(url, headers=headers)
+    return response.json() if response.status_code == 200 else None
+
+
+
+
 # Route pour récupérer les données des films populaires
 @app.route('/get-movies')
 def get_movies():
@@ -28,17 +41,6 @@ def search_movies():
     url = f'https://api.themoviedb.org/3/search/movie?query={search_query}&language=en-US&page=1'
     movies_data = fetch_movies(url)
     return jsonify(movies_data)
-
-# Fonction pour récupérer les détails d'un film à partir de l'API TMDB
-def fetch_movie_details(movie_id):
-    url = f'https://api.themoviedb.org/3/movie/{movie_id}?language=en-US'
-    headers = {
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2MTdhNGZlNWQ1MzI2ZDk0ZTI3ZDI3YTRiODQzMmFlZSIsInN1YiI6IjY1YjUyZmYwNmUwZDcyMDE0OTQ3MDg3MyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.QCiPm9TC11xtADfyp2jr85Z_aBvWLaEzaJjWeqC7ZM4',
-        'Accept': 'application/json'
-    }
-    response = requests.get(url, headers=headers)
-    return response.json() if response.status_code == 200 else None
-
 # Route pour afficher les détails d'un film
 @app.route('/movie-details/<int:movie_id>')
 def movie_details(movie_id):
@@ -57,19 +59,11 @@ def home():
 def formulaire():
     return render_template('connexion.html')
 
-
-
-@app.route('/inscription', methods=['POST'])
+@app.route('/inscription')
 def inscription():
-    data = request.get_json()
-    username = data.get('username')
-    password = data.get('password')
+    return render_template('inscription.html')
 
-    # Ajouter l'utilisateur au fichier JSON
-    add_user_to_json(username, password)
 
-    # Retourner un message de succès
-    return jsonify({'message': 'Inscription réussie'}), 200
 
 @app.route('/inscription_success')
 def inscription_success():

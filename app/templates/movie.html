@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Détails du Film</title>
+    <!-- Inclure des liens vers des fichiers CSS, des scripts JavaScript ou d'autres dépendances nécessaires -->
+</head>
+<body>
+    <h1>{{ movie.title }}</h1>
+    <img src="http://image.tmdb.org/t/p/w185/{{ movie.poster_path }}" alt="{{ movie.title }}">
+    <p>Date de sortie : {{ movie.release_date }}</p>
+    <p>Popularité : {{ movie.popularity }}</p>
+    <p>Synopsis : {{ movie.overview }}</p>
+    <!-- Inclure d'autres détails du film selon les besoins -->
+</body>
+</html>
+

@@ -1,13 +1,59 @@
 /* static/css/style.css */
 
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: Arial, sans-serif;
     background-color: #f4f4f4;
-    color: #333;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.container {
+
+    margin: 0 auto;
+    padding: 20px;
 }
 
 h1 {
-    color: #007bff;
+    text-align: center;
+    color: #333;
 }
 
-/* Add more styles as needed */
+.movie-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-gap: 20px;
+}
+
+.movie {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.movie img {
+    width: 100%;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.movie h2 {
+    margin-top: 0;
+    font-size: 1.2em;
+}
+
+.movie p {
+    margin: 5px 0;
+    color: #666;
+}
+
+.movie .overview {
+    font-style: italic;
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+}

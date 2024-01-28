@@ -1,15 +1,127 @@
-<!-- videotheque.html -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vidéothèque</title>
+    <title>Videothèque</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
 </head>
+
 <body>
-    <h1>Vidéothèque</h1>
-    <p>Cette page contiendra du contenu lié à la vidéothèque.</p>
-    <p><a href="/">Retour à la page d'accueil</a></p>
+    <!-- Page Loader -->
+    <div id="loader-wrapper">
+        <div id="loader"></div>
+
+        <div class="loader-section section-left"></div>
+        <div class="loader-section section-right"></div>
+
+    </div>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-film mr-2"></i>
+                Ma Vidéothèque
+            </a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <a href="/videotheque">Accueil</a>  <a href="/connexion">Se connecter</a>  <a href="/collection">Collection</a>       
+            </div>
+        </div>
+    </nav>
+
+    <div class="tm-hero d-flex justify-content-center align-items-center" data-parallax="scroll"
+        data-image-src="img/hero.jpg">
+        <form id="searchForm" class="d-flex tm-search-form">
+            <input id="searchInput" class="form-control tm-search-input" type="search" placeholder="Rechercher"
+                aria-label="Rechercher">
+        </form>
+    </div>
+
+    <div class="container-fluid tm-container-content tm-mt-60">
+        <div class="row mb-4">
+            <h2 class="col-6 tm-text-primary">
+                Liste des Films
+            </h2>
+        </div>
+        <div class="row tm-mb-90 tm-gallery">
+
+        </div> <!-- row -->
+    </div>
+
+    <footer class="tm-bg-gray pt-5 pb-3 tm-text-gray tm-footer">
+    </footer>
+
+    <script>
+        async function fetchMovies(searchQuery = '') {
+            try {
+                let url = '/get-movies';
+                if (searchQuery) {
+                    url = `/search-movies?query=${searchQuery}`;
+                }
+                const response = await fetch(url);
+                const data = await response.json();
+                displayMovies(data);
+            } catch (error) {
+                console.error('Erreur lors de la récupération des données des films :', error);
+            }
+        }
+
+        function displayMovies(movies) {
+            const moviesContainer = document.querySelector('.tm-gallery');
+            moviesContainer.innerHTML = '';
+
+            if (movies && movies.length > 0) {
+                for (const movie of movies) {
+                    const movieDiv = document.createElement('div');
+                    movieDiv.classList.add('col-xl-3', 'col-lg-4', 'col-md-6', 'col-sm-6', 'col-12', 'mb-5');
+                    movieDiv.innerHTML = `
+                <figure class="effect-ming tm-video-item">
+                    <img src="http://image.tmdb.org/t/p/w185/${movie.poster_path}" alt="${movie.title}" class="img-fluid">
+                    <figcaption class="d-flex align-items-center justify-content-center">
+                        <h2>${movie.title}</h2>
+                        <a href="/movie-details" class="btn btn-primary tm-btn-details" data-movie-id="${movie.id}">Voir plus</a>
+                    </figcaption>                    
+                </figure>
+                <div class="d-flex justify-content-between tm-text-gray">
+                    <span class="tm-text-gray-light">${movie.release_date}</span>
+                    <span>${movie.popularity} vues</span>
+                </div>
+            `;
+                    moviesContainer.appendChild(movieDiv);
+                }
+            } else {
+                moviesContainer.innerHTML = '<p>Aucun film trouvé.</p>';
+            }
+        }
+
+
+        // Appel de la fonction pour récupérer et afficher les films
+        fetchMovies();
+
+        // Écouteur d'événement pour les liens "Voir plus"
+        document.addEventListener('click', function (event) {
+            const target = event.target;
+            if (target.classList.contains('tm-btn-details')) {
+                event.preventDefault();
+                const movieId = target.getAttribute('data-movie-id');
+                window.location.href = `/movie-details/${movieId}`;
+            }
+        });
+        // Écouteur d'événement pour la soumission du formulaire de recherche
+        const searchForm = document.querySelector('.tm-search-form');
+        searchForm.addEventListener('submit', function (event) {
+            event.preventDefault(); // Empêche le rechargement de la page lors de la soumission du formulaire
+            const searchInput = document.querySelector('.tm-search-input');
+            const searchQuery = searchInput.value.trim(); // Récupère la valeur de recherche et supprime les espaces inutiles
+            fetchMovies(searchQuery); // Appelle la fonction fetchMovies avec le terme de recherche
+        });
+
+
+
+
+
+    </script>
+
 </body>
+
 </html>
